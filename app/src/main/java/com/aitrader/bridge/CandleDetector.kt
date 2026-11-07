@@ -64,7 +64,9 @@ object CandleDetector {
         val colors = IntArray(regionWidth)
         val colTop = IntArray(regionWidth) { Int.MAX_VALUE }
         val colBottom = IntArray(regionWidth) { -1 }
-        val minPixels = max(2, h / 220)
+        val yTop = (min(calibration.yA, calibration.yB) * h).toInt().coerceIn(0, h - 2)
+        val yBottom = (max(calibration.yA, calibration.yB) * h).toInt().coerceIn(yTop + 2, h - 1)
+        val minPixels = max(2, (yBottom - yTop) / 220)
 
         var ci = 0
         var x = xStart
@@ -73,8 +75,8 @@ object CandleDetector {
             var bottom = -1
             var green = 0
             var red = 0
-            var y = 0
-            while (y < h) {
+            var y = yTop
+            while (y <= yBottom) {
                 val p = pixels[y * w + x]
                 if (isGreen(p)) {
                     green++
@@ -115,28 +117,26 @@ object CandleDetector {
                 if (colors[probe] == color) {
                     end = probe
                     gap = 0
-                } else if (colors[probe] == COLOR_NONE) {
-                    gap++
-                    if (gap > 1) break
                 } else {
+                    // Um espaço vazio separa candles vizinhos; não unir candles da mesma cor.
                     break
                 }
                 probe++
             }
-            if (end > start) segments.add(intArrayOf(start, end, color))
+            if (end >= start) segments.add(intArrayOf(start, end, color))
             i = end + 1
         }
 
         // 3) corpo (cobertura de linha) e pavios (extremos da coluna)
         val raw = mutableListOf<DetectedCandle>()
-        val maxWidth = max(4, (regionWidth * 0.2).toInt())
+        val maxWidth = max(5, (regionWidth * 0.08).toInt())
 
         for (seg in segments) {
             val start = seg[0]
             val end = seg[1]
             val color = seg[2]
             val width = end - start + 1
-            if (width < 2 || width > maxWidth) continue
+            if (width < 1 || width > maxWidth) continue
 
             var segTop = Int.MAX_VALUE
             var segBottom = -1

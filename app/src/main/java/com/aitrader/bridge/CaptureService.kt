@@ -206,8 +206,8 @@ class CaptureService : Service() {
         overlay?.update(
             lastAnalysis?.optString("direction") ?: "WAIT",
             lastAnalysis?.optDouble("confidence") ?: 0.0,
-            "Aguardando candles.",
-            "${prefs.asset.ifBlank { "ativo não definido" }} · ${prefs.timeframe}"
+            "Análise local pronta. Abra qualquer gráfico.",
+            "Gráfico automático · ${prefs.timeframe}"
         )
     }
 
@@ -232,7 +232,7 @@ class CaptureService : Service() {
                         autoCalibrationDone = true
                         postStatusThrottled("CAPTURING", "CALIBRATED", "Calibração automática concluída pela escala de preços.")
                         main.post {
-                            overlay?.update("WAIT", 0.0, "Calibração automática concluída. Lendo candles…", "${prefs.asset.ifBlank { "ativo não definido" }} · ${prefs.timeframe}")
+                            overlay?.update("WAIT", 0.0, "Calibração automática concluída. Lendo candles…", "Gráfico automático · ${prefs.timeframe}")
                         }
                     } else if (prefs.calibration() == null) {
                         postStatusThrottled("CALIBRATION_REQUIRED", "NONE", "Procurando a escala de preços da IQ Option para calibrar automaticamente…")
@@ -246,12 +246,7 @@ class CaptureService : Service() {
                 return
             }
 
-            val asset = prefs.asset
-            if (asset.isBlank()) {
-                postStatusThrottled("ERROR", "NONE", "Defina o ativo monitorado no app.")
-                return
-            }
-
+            val asset = "AUTO"
             val timeframe = prefs.timeframe
             val candles = CandleDetector.detect(
                 frame = frame,
@@ -261,19 +256,16 @@ class CaptureService : Service() {
             )
 
             if (candles.isEmpty()) {
-                postStatusThrottled("CAPTURING", "INVALID", "Nenhum candle reconhecido no frame.")
-                main.post {
-                    overlay?.update(
-                        lastAnalysis?.optString("direction") ?: "WAIT",
-                        lastAnalysis?.optDouble("confidence") ?: 0.0,
-                        "Nenhum candle reconhecido — confira a calibração.",
-                        "$asset · $timeframe"
-                    )
-                }
+                postStatusThrottled("CAPTURING", "INVALID", "Nenhum candle reconhecido. Verifique zoom, cores e área do gráfico.")
+                main.post { overlay?.update("WAIT", 0.0, "Não reconheci candles neste frame. Deixe o gráfico visível e sem menus.", "AUTO · $timeframe · 0 candles") }
                 return
             }
 
-            uploadCandles(asset, timeframe, candles)
+            val result = StrategyEngine.analyze(candles, prefs.strategies)
+            lastAnalysis = JSONObject().put("direction", result.direction).put("confidence", result.confidence).put("reason", result.reason)
+            main.post {
+                overlay?.update(result.direction, result.confidence, result.reason, "AUTO · $timeframe · ${result.count} candles")
+            }
         } catch (e: Exception) {
             postStatusThrottled("ERROR", "INVALID", "Falha na captura: ${e.message}")
         } finally {
@@ -366,29 +358,8 @@ class CaptureService : Service() {
     }
 
     private fun postStatus(captureState: String, dataState: String, reason: String) {
-        val baseUrl = prefs.baseUrl
-        val token = prefs.token
-        if (baseUrl.isBlank() || token.isBlank()) return
-
-        val frame = lastFrame
-        val payload = JSONObject()
-            .put("capture_state", captureState)
-            .put("data_state", dataState)
-            .put("asset", prefs.asset)
-            .put("timeframe", prefs.timeframe)
-            .put("resolution", if (frame != null) "${frame.width}x${frame.height}" else "")
-            .put("projection_active", projection != null)
-            .put("app_in_foreground", true)
-            .put("last_reason", reason)
-            .put("detector_version", CandleDetector.VERSION)
-
-        network.execute {
-            try {
-                BridgeApi.post(baseUrl, "/api/bridge/status", token, payload)
-            } catch (e: Exception) {
-                // status é telemetria: falha aqui não interrompe a captura
-            }
-        }
+        // Operação offline: nenhum endpoint ou servidor é necessário.
+        main.post { overlay?.update("WAIT", 0.0, reason, "LOCAL · ${prefs.timeframe}") }
     }
 
     private fun stopCapture() {

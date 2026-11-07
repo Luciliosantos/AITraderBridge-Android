@@ -100,8 +100,8 @@ class FloatingOverlay(
 
     fun update(direction: String, confidence: Double, reason: String, meta: String) {
         val color = when (direction) {
-            "CALL" -> 0xFF21BA71.toInt()
-            "PUT" -> 0xFFE84B45.toInt()
+            "CALL", "COMPRA" -> 0xFF21BA71.toInt()
+            "PUT", "VENDA" -> 0xFFE84B45.toInt()
             else -> 0xFFF0B429.toInt()
         }
         directionView?.text = if (direction == "WAIT") "AGUARDAR" else direction

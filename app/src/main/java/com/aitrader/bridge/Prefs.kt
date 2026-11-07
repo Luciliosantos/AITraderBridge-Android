@@ -60,5 +60,9 @@ class Prefs(context: Context) {
 
     fun isPaired(): Boolean = token.isNotEmpty() && baseUrl.isNotEmpty()
 
+    var strategies: Set<String>
+        get() = sp.getStringSet("strategies", setOf("EMA", "RSI", "MACD", "CANDLE", "SR"))?.toSet() ?: setOf("EMA", "RSI", "MACD", "CANDLE", "SR")
+        set(value) { sp.edit().putStringSet("strategies", value.toSet()).apply() }
+
     fun calibration(): Calibration? = Calibration.fromJson(calibrationJson)
 }

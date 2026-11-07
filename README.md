@@ -1,9 +1,6 @@
 # AI Trader Bridge — app Android
 
-Ponte nativa entre a IQ Option (captura de tela) e o painel **Multi Frame Candle Compass**.
-O app captura a tela por `MediaProjection`, lê os candles do gráfico, converte pixels em preço
-pela calibração, envia os candles autenticados para `/api/bridge/candles` e mostra a decisão
-do motor num painel flutuante sobre a IQ Option.
+Aplicativo Android independente. O app captura a tela por `MediaProjection`, lê candles do gráfico, calibra a escala de preços e executa localmente as estratégias EMA, RSI, MACD, padrões de candles e suporte/resistência. Não exige site, pareamento, conta ou conexão com servidor para analisar.
 
 ## Requisitos
 
@@ -67,10 +64,8 @@ e permita "instalar de fontes desconhecidas" quando o Android pedir.
 5. **Calibrar detector** (com a captura rodando, para existir um frame):
    - digite o preço mais alto e o mais baixo que aparecem no eixo de preço;
    - toque na imagem, nesta ordem: **ponto do preço A → ponto do preço B → borda esquerda do gráfico → borda direita**;
-   - salvar. A calibração fica em frações da tela, então sobrevive a mudanças de resolução.
-6. O painel flutuante aparece sobre a IQ Option e é arrastável pelo título.
-   Os botões **M15 / M5 / M1** dizem ao detector qual timeframe está na tela no momento.
-7. No painel web, abra **Dados** para ver os candles chegando e o **Histórico** para as decisões.
+   - salvar. A calibração fica em frações da tela.
+6. O painel flutuante mostra a análise local. Não precisa informar o par: o app analisa o gráfico que estiver aberto.
 
 ## Como o detector funciona
 
@@ -87,7 +82,7 @@ e permita "instalar de fontes desconhecidas" quando o Android pedir.
 | --- | --- | --- |
 | `POST /api/bridge/pair` | — | `{ code, device_name, android_version, app_version }` → `{ device_id, token }` |
 | `POST /api/bridge/status` | Bearer | `capture_state`, `data_state`, `asset`, `timeframe`, `resolution`, `last_reason` |
-| `POST /api/bridge/candles` | Bearer | `asset`, `timeframe`, `sequence`, `price_mode`, `candles[]` → devolve a análise |
+| `Local` | — | Análise executada dentro do app, sem enviar candles para servidor |
 | `POST /api/bridge/analysis` | Bearer | `{ asset }` → decisão do motor |
 
 A `sequence` é sempre crescente; se o servidor responder `409`, o app ressincroniza o contador
@@ -95,7 +90,7 @@ com o valor devolvido e continua enviando.
 
 ## Limitações conhecidas
 
-- O app **não opera** a IQ Option: só lê a tela. Não há clique automático nem ordem enviada.
+- O app fornece sinais informativos; não envia ordens nem clica para operar automaticamente.
 - A captura reflete a tela no momento em que o serviço iniciou; girar o celular depois exige
   parar e iniciar a captura de novo.
 - Se a IQ Option trocar o tema/zoom, recalibre.
