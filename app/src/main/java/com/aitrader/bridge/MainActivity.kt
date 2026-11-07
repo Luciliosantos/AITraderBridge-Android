@@ -5,6 +5,8 @@ import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.accessibilityservice.AccessibilityServiceInfo
+import android.view.accessibility.AccessibilityManager
 import android.net.Uri
 import android.widget.Button
 import android.widget.CheckBox
@@ -38,6 +40,17 @@ class MainActivity : AppCompatActivity() {
             setOnCheckedChangeListener { _,id -> prefs.timeframe=when(id){R.id.tfM5->"M5";R.id.tfM15->"M15";else->"M1"}; render("Período ${prefs.timeframe} selecionado.") }
         }
         findViewById<Button>(R.id.buttonOverlay).setOnClickListener { requestOverlay() }
+        findViewById<Button>(R.id.buttonAccessibility).setOnClickListener {
+            startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+            toast("Nas configurações, ative AITraderBridge em Apps instalados / Acessibilidade.")
+        }
+        findViewById<CheckBox>(R.id.checkAutoTrade).apply {
+            isChecked = prefs.autoTradeEnabled
+            setOnCheckedChangeListener { _, checked ->
+                prefs.autoTradeEnabled = checked
+                toast(if (checked) "Automático armado. Só executa se a conta DEMO for identificada." else "Execução automática desligada.")
+            }
+        }
         capture.setOnClickListener { toggleCapture() }
         findViewById<Button>(R.id.buttonCalibrate).setOnClickListener { calibrate() }
         render("Pronto para analisar qualquer gráfico visível. Não precisa de site nem pareamento.")
@@ -71,5 +84,14 @@ class MainActivity : AppCompatActivity() {
         }.show()
     }
     private fun toast(s:String){Toast.makeText(this,s,Toast.LENGTH_LONG).show();render(s)}
-    override fun onResume(){super.onResume();if(::status.isInitialized)render(if(CaptureService.isRunning) "Análise local ativa." else "Pronto. Selecione estratégias e inicie.")}
+    override fun onResume(){
+        super.onResume()
+        if(::status.isInitialized) {
+            val manager = getSystemService(ACCESSIBILITY_SERVICE) as AccessibilityManager
+            val enabled = manager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK)
+                .any { it.resolveInfo.serviceInfo.packageName == packageName && it.resolveInfo.serviceInfo.name.endsWith("TradeAccessibilityService") }
+            status.text = if (prefs.autoTradeEnabled && !enabled) "Automático armado, mas falta ativar a acessibilidade do AITraderBridge." else if (CaptureService.isRunning) "Análise local ativa. ${TradeAccessibilityService.lastMessage}" else "Pronto. Selecione estratégias e inicie."
+            capture.text = if(CaptureService.isRunning) "Parar análise" else "Iniciar análise"
+        }
+    }
 }

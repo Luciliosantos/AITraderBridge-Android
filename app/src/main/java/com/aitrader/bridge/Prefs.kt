@@ -64,5 +64,9 @@ class Prefs(context: Context) {
         get() = sp.getStringSet("strategies", setOf("EMA", "RSI", "MACD", "CANDLE", "SR"))?.toSet() ?: setOf("EMA", "RSI", "MACD", "CANDLE", "SR")
         set(value) { sp.edit().putStringSet("strategies", value.toSet()).apply() }
 
+    var autoTradeEnabled: Boolean
+        get() = sp.getBoolean("auto_trade_enabled", false)
+        set(value) { sp.edit().putBoolean("auto_trade_enabled", value).apply() }
+
     fun calibration(): Calibration? = Calibration.fromJson(calibrationJson)
 }

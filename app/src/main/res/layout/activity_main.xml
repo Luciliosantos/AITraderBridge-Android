@@ -15,6 +15,10 @@
   <CheckBox android:id="@+id/strategyMacd" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="MACD" android:textColor="@color/text" />
   <CheckBox android:id="@+id/strategyCandle" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Padrões de candles / engolfo" android:textColor="@color/text" />
   <CheckBox android:id="@+id/strategySr" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Suporte e resistência" android:textColor="@color/text" />
+  <TextView style="@style/Label" android:layout_marginTop="18dp" android:text="EXECUÇÃO AUTOMÁTICA INTEGRADA" />
+  <CheckBox android:id="@+id/checkAutoTrade" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Ativar execução automática (somente DEMO)" android:textColor="@color/text" />
+  <Button android:id="@+id/buttonAccessibility" style="@style/GhostButton" android:text="Ativar acessibilidade do AITraderBridge" />
+  <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Proteções: exige conta de prática visível, confiança mínima de 78%, intervalo de 60 segundos e máximo de 5 operações por sessão. O valor e a expiração são os que estiverem configurados na corretora." android:textColor="@color/muted" android:textSize="11sp" />
   <Button android:id="@+id/buttonOverlay" style="@style/GhostButton" android:layout_marginTop="14dp" android:text="Permitir painel flutuante" />
   <Button android:id="@+id/buttonCapture" style="@style/PrimaryButton" android:text="Iniciar análise" />
   <Button android:id="@+id/buttonCalibrate" style="@style/GhostButton" android:text="Calibração manual de segurança" />

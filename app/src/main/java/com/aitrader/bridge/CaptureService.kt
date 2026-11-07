@@ -262,6 +262,9 @@ class CaptureService : Service() {
             }
 
             val result = StrategyEngine.analyze(candles, prefs.strategies)
+            if (result.direction == "COMPRA" || result.direction == "VENDA") {
+                TradeAccessibilityService.requestTrade(result.direction, result.confidence)
+            }
             lastAnalysis = JSONObject().put("direction", result.direction).put("confidence", result.confidence).put("reason", result.reason)
             main.post {
                 overlay?.update(result.direction, result.confidence, result.reason, "AUTO · $timeframe · ${result.count} candles")

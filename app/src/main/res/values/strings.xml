@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AI Trader Bridge</string>
+    <string name="accessibility_trade_description">Permite ao AITraderBridge localizar e tocar nos botões de operação somente após confirmar que a corretora está em conta de prática.</string>
 
     <string name="title">AI Trader Flutuante</string>
     <string name="subtitle">Ponte autenticada entre a IQ Option e o painel Multi Frame Candle Compass.</string>
