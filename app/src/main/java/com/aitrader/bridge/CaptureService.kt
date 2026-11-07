@@ -261,13 +261,21 @@ class CaptureService : Service() {
                 return
             }
 
+            // O candle mais à direita continua em formação. A estratégia só recebe candles
+            // fechados; a ordem é solicitada uma única vez para o candle que acabou de fechar.
+            val closedCandles = candles.filter { it.isClosed == "true" }
+            val formingCount = candles.count { it.isClosed != "true" }
             val result = StrategyEngine.analyze(candles, prefs.strategies)
-            if (result.direction == "COMPRA" || result.direction == "VENDA") {
-                TradeAccessibilityService.requestTrade(result.direction, result.confidence)
+            val lastClosed = closedCandles.lastOrNull()
+            if ((result.direction == "COMPRA" || result.direction == "VENDA") && lastClosed != null) {
+                val signalKey = "$timeframe:${lastClosed.timestamp}:${result.direction}"
+                TradeAccessibilityService.requestTrade(result.direction, result.confidence, signalKey)
             }
-            lastAnalysis = JSONObject().put("direction", result.direction).put("confidence", result.confidence).put("reason", result.reason)
+            val detail = if (lastClosed == null) "Aguardando candle fechar" else result.reason
+            lastAnalysis = JSONObject().put("direction", result.direction).put("confidence", result.confidence).put("reason", detail)
             main.post {
-                overlay?.update(result.direction, result.confidence, result.reason, "AUTO · $timeframe · ${result.count} candles")
+                overlay?.update(result.direction, result.confidence, detail,
+                    "AUTO · $timeframe · ${closedCandles.size} fechados + $formingCount em formação")
             }
         } catch (e: Exception) {
             postStatusThrottled("ERROR", "INVALID", "Falha na captura: ${e.message}")
