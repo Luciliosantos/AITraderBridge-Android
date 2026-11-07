@@ -62,6 +62,7 @@ class CaptureService : Service() {
     private var overlay: FloatingOverlay? = null
     private var lastAnalysis: JSONObject? = null
     private var lastStatusAt = 0L
+    private var lastAutoCalibrationAt = 0L
 
     private val captureLoop = object : Runnable {
         override fun run() {
@@ -223,7 +224,24 @@ class CaptureService : Service() {
 
             val calibration = prefs.calibration()
             if (calibration == null) {
-                postStatusThrottled("CALIBRATION_REQUIRED", "NONE", "Calibre o detector no app.")
+                val now = System.currentTimeMillis()
+                if (now - lastAutoCalibrationAt >= 5000L) {
+                    lastAutoCalibrationAt = now
+                    main.post {
+                        overlay?.update("WAIT", 0.0, "Lendo automaticamente os preços do eixo do gráfico…", "Calibração automática")
+                    }
+                    AutoCalibrator.detect(frame) { detected ->
+                        if (detected != null) {
+                            prefs.calibrationJson = detected.toJson()
+                            postStatusThrottled("CAPTURING", "CALIBRATED", "Calibração automática concluída pela escala de preços.")
+                            main.post {
+                                overlay?.update("WAIT", 0.0, "Calibração automática concluída. Lendo candles…", "${prefs.asset.ifBlank { "ativo não definido" }} · ${prefs.timeframe}")
+                            }
+                        } else {
+                            postStatusThrottled("CALIBRATION_REQUIRED", "NONE", "Não consegui ler dois preços do eixo. Deixe a escala visível ou calibre manualmente.")
+                        }
+                    }
+                }
                 return
             }
 
