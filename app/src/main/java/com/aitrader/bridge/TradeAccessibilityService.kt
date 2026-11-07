@@ -70,9 +70,11 @@ class TradeAccessibilityService : AccessibilityService() {
             lastMessage = "Sinal expirou antes da confirmação visual. Nenhum toque executado."
             return
         }
-        val root = rootInActiveWindow ?: run { lastMessage = "Não consegui ler a tela da corretora."; return }
+        val roots = windows.mapNotNull { window -> window.root }.ifEmpty { listOfNotNull(rootInActiveWindow) }
+        if (roots.isEmpty()) { lastMessage = "Não consegui ler a tela da corretora. Verifique a acessibilidade da IQ Option."; return }
         try {
-            val screenText = normalizeText(collectText(root))
+            // A IQ Option pode renderizar saldo e botões em janelas acessíveis separadas.
+            val screenText = normalizeText(roots.joinToString(" ") { collectText(it) })
             // IQ Option pode exibir o saldo de prática em vez do rótulo literal "Conta DEMO".
             val demoVisible = listOf("CONTA DE PRATICA", "CONTA DEMO", "DEMO ACCOUNT", "PRACTICE ACCOUNT", "SALDO DE PRATICA", "MODO DE PRATICA").any { it in screenText }
             if (!demoVisible) {
@@ -82,7 +84,8 @@ class TradeAccessibilityService : AccessibilityService() {
                 return
             }
             val labels = if (direction == "COMPRA") listOf("COMPRAR", "MAIS ALTO", "ACIMA", "CALL", "BUY") else listOf("VENDER", "MAIS BAIXO", "ABAIXO", "PUT", "SELL")
-            val node = findActionNode(root, labels)
+            val matches = roots.mapNotNull { findActionNode(it, labels) }.distinctBy { it.hashCode() }
+            val node = matches.firstOrNull()
             if (node == null) {
                 lastMessage = "Conta DEMO reconhecida, mas botão ${labels.first()} não encontrado."
                 return
@@ -119,13 +122,17 @@ class TradeAccessibilityService : AccessibilityService() {
     }
 
     private fun findActionNode(root: AccessibilityNodeInfo, labels: List<String>): AccessibilityNodeInfo? {
-        val wanted = labels.map { it.uppercase(Locale.ROOT) }
+        val wanted = labels.map { normalizeText(it) }
         fun walk(node: AccessibilityNodeInfo): AccessibilityNodeInfo? {
             val label = normalizeText((node.text?.toString() ?: "") + " " + (node.contentDescription?.toString() ?: ""))
-            if (wanted.any { label.trim() == it || label.contains(it) }) {
+            // A IQ Option pode expor o texto junto do ícone (ex.: "↗COMPRAR").
+            // Não exigir espaços nas bordas: o rótulo pode vir concatenado ao símbolo.
+            if (wanted.any { target -> label.contains(target) }) {
                 var candidate: AccessibilityNodeInfo? = node
-                while (candidate != null && !candidate.isClickable) candidate = candidate.parent
-                if (candidate != null) return candidate
+                while (candidate != null && (!candidate.isClickable || !candidate.isEnabled)) {
+                    candidate = candidate.parent
+                }
+                if (candidate != null && candidate.isVisibleToUser) return candidate
             }
             for (i in 0 until node.childCount) {
                 val found = node.getChild(i)?.let { walk(it) }
