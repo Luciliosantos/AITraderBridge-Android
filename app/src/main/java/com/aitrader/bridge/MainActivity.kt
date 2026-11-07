@@ -21,7 +21,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var prefs: Prefs
     private lateinit var status: TextView
     private lateinit var capture: Button
-    private val strategyIds = mapOf(R.id.strategyEma to "EMA", R.id.strategyRsi to "RSI", R.id.strategyMacd to "MACD", R.id.strategyCandle to "CANDLE", R.id.strategySr to "SR")
+    private val strategyIds = mapOf(
+        R.id.strategyEma to "EMA", R.id.strategyRsi to "RSI", R.id.strategyMacd to "MACD", R.id.strategyCandle to "CANDLE", R.id.strategySr to "SR",
+        R.id.strategyDoji to "DOJI", R.id.strategyHammer to "HAMMER", R.id.strategyShootingStar to "SHOOTING_STAR",
+        R.id.strategyMorningStar to "MORNING_STAR", R.id.strategyEveningStar to "EVENING_STAR", R.id.strategyHarami to "HARAMI",
+        R.id.strategyPiercing to "PIERCING", R.id.strategyDarkCloud to "DARK_CLOUD", R.id.strategyThreeSoldiers to "THREE_SOLDIERS",
+        R.id.strategyThreeCrows to "THREE_CROWS", R.id.strategyTweezers to "TWEEZERS", R.id.strategyMarubozu to "MARUBOZU"
+    )
 
     private val projectionLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val data=result.data

@@ -61,7 +61,7 @@ class Prefs(context: Context) {
     fun isPaired(): Boolean = token.isNotEmpty() && baseUrl.isNotEmpty()
 
     var strategies: Set<String>
-        get() = sp.getStringSet("strategies", setOf("EMA", "RSI", "MACD", "CANDLE", "SR"))?.toSet() ?: setOf("EMA", "RSI", "MACD", "CANDLE", "SR")
+        get() = sp.getStringSet("strategies", setOf("EMA", "RSI", "MACD", "CANDLE", "SR", "DOJI", "HAMMER", "SHOOTING_STAR", "MORNING_STAR", "EVENING_STAR", "HARAMI", "PIERCING", "DARK_CLOUD", "THREE_SOLDIERS", "THREE_CROWS", "TWEEZERS", "MARUBOZU"))?.toSet() ?: setOf("EMA", "RSI", "MACD", "CANDLE", "SR", "DOJI", "HAMMER", "SHOOTING_STAR", "MORNING_STAR", "EVENING_STAR", "HARAMI", "PIERCING", "DARK_CLOUD", "THREE_SOLDIERS", "THREE_CROWS", "TWEEZERS", "MARUBOZU")
         set(value) { sp.edit().putStringSet("strategies", value.toSet()).apply() }
 
     var autoTradeEnabled: Boolean

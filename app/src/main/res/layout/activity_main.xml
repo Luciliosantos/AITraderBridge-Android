@@ -15,6 +15,19 @@
   <CheckBox android:id="@+id/strategyMacd" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="MACD" android:textColor="@color/text" />
   <CheckBox android:id="@+id/strategyCandle" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Padrões de candles / engolfo" android:textColor="@color/text" />
   <CheckBox android:id="@+id/strategySr" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Suporte e resistência" android:textColor="@color/text" />
+  <TextView style="@style/Label" android:layout_marginTop="10dp" android:text="PADRÕES DE VELAS — SELECIONE INDIVIDUALMENTE" />
+  <CheckBox android:id="@+id/strategyDoji" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Doji" android:textColor="@color/text" />
+  <CheckBox android:id="@+id/strategyHammer" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Martelo / Martelo invertido" android:textColor="@color/text" />
+  <CheckBox android:id="@+id/strategyShootingStar" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Estrela cadente / Enforcado" android:textColor="@color/text" />
+  <CheckBox android:id="@+id/strategyMorningStar" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Estrela da manhã" android:textColor="@color/text" />
+  <CheckBox android:id="@+id/strategyEveningStar" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Estrela da noite" android:textColor="@color/text" />
+  <CheckBox android:id="@+id/strategyHarami" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Harami de alta / baixa" android:textColor="@color/text" />
+  <CheckBox android:id="@+id/strategyPiercing" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Linha de perfuração" android:textColor="@color/text" />
+  <CheckBox android:id="@+id/strategyDarkCloud" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Nuvem negra" android:textColor="@color/text" />
+  <CheckBox android:id="@+id/strategyThreeSoldiers" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Três soldados brancos" android:textColor="@color/text" />
+  <CheckBox android:id="@+id/strategyThreeCrows" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Três corvos negros" android:textColor="@color/text" />
+  <CheckBox android:id="@+id/strategyTweezers" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Topo / fundo pinça" android:textColor="@color/text" />
+  <CheckBox android:id="@+id/strategyMarubozu" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Marubozu de alta / baixa" android:textColor="@color/text" />
   <TextView style="@style/Label" android:layout_marginTop="18dp" android:text="EXECUÇÃO AUTOMÁTICA INTEGRADA" />
   <CheckBox android:id="@+id/checkAutoTrade" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Ativar execução automática (somente DEMO)" android:textColor="@color/text" />
   <Button android:id="@+id/buttonAccessibility" style="@style/GhostButton" android:text="Ativar acessibilidade do AITraderBridge" />

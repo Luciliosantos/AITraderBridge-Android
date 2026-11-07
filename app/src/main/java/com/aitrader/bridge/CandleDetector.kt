@@ -14,7 +14,7 @@ import kotlin.math.min
  */
 object CandleDetector {
 
-    const val VERSION = "detector-1.0.0"
+    const val VERSION = "detector-1.1.0-100c"
 
     private const val COLOR_NONE = 0
     private const val COLOR_GREEN = 1
@@ -46,7 +46,7 @@ object CandleDetector {
         timeframe: String,
         nowSec: Long,
         minConfidence: Double = 0.45,
-        maxCandles: Int = 40
+        maxCandles: Int = 100
     ): List<DetectedCandle> {
         val w = frame.width
         val h = frame.height
