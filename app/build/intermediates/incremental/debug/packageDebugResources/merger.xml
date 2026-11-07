@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/opt/aitraderbridge/android/app/src/main/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/opt/aitraderbridge/android/app/src/main/res"><file path="/opt/aitraderbridge/android/app/src/main/res/values/styles.xml" qualifiers=""><style name="Label">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginBottom">6dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textColor">@color/muted</item>
+        <item name="android:textSize">10sp</item>
+    </style><style name="Field">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:background">@drawable/bg_input</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textColorHint">#55657A</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:singleLine">true</item>
+    </style><style name="PrimaryButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:background">@drawable/bg_button_primary</item>
+        <item name="android:textColor">#04150C</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+    </style><style name="GhostButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:background">@drawable/bg_button_ghost</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+    </style><style name="TinyButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:background">@drawable/bg_button_ghost</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style></file><file path="/opt/aitraderbridge/android/app/src/main/res/values/colors.xml" qualifiers=""><color name="bg">#0B0F14</color><color name="surface">#131A22</color><color name="stroke">#223040</color><color name="text">#E6EDF5</color><color name="muted">#8B9AAC</color><color name="brand">#21BA71</color><color name="danger">#E84B45</color><color name="warn">#F0B429</color></file><file path="/opt/aitraderbridge/android/app/src/main/res/values/strings.xml" qualifiers=""><string name="app_name">AI Trader Bridge</string><string name="title">AI Trader Flutuante</string><string name="subtitle">Ponte autenticada entre a IQ Option e o painel Multi Frame Candle Compass.</string><string name="label_server">URL do painel</string><string name="hint_server">https://seu-app.base44.app</string><string name="label_device">Nome do dispositivo</string><string name="label_code">Código de pareamento</string><string name="hint_code">ABCD-1234</string><string name="label_asset">Ativo monitorado</string><string name="hint_asset">EUR/USD</string><string name="action_pair">Parear dispositivo</string><string name="action_overlay">Permitir sobreposição</string><string name="action_start">Iniciar captura</string><string name="action_stop">Parar captura</string><string name="action_calibrate">Calibrar detector</string><string name="state_disconnected">Sem pareamento. Gere um código no painel.</string><string name="state_ready">Pareado. Conceda a sobreposição e inicie a captura.</string><string name="notif_channel">Captura de tela</string><string name="notif_title">Capturando a IQ Option</string><string name="notif_text">O painel flutuante está ativo.</string><string name="calibration_title">Calibração do detector</string><string name="calibration_help">Toque na imagem na ordem: 1) ponto do preço A, 2) ponto do preço B, 3) borda esquerda do gráfico, 4) borda direita do gráfico.</string><string name="calibration_price_a">Preço no ponto A</string><string name="calibration_price_b">Preço no ponto B</string><string name="calibration_save">Salvar calibração</string><string name="calibration_no_frame">Inicie a captura para ter um frame e calibre.</string></file><file path="/opt/aitraderbridge/android/app/src/main/res/values/themes.xml" qualifiers=""><style name="Theme.AITrader" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:statusBarColor">@color/bg</item>
+        <item name="android:navigationBarColor">@color/bg</item>
+        <item name="android:textColorPrimary">@color/text</item>
+        <item name="android:textColorSecondary">@color/muted</item>
+        <item name="colorAccent">@color/brand</item>
+    </style></file><file name="dialog_calibration" path="/opt/aitraderbridge/android/app/src/main/res/layout/dialog_calibration.xml" qualifiers="" type="layout"/><file name="activity_main" path="/opt/aitraderbridge/android/app/src/main/res/layout/activity_main.xml" qualifiers="" type="layout"/><file name="overlay_panel" path="/opt/aitraderbridge/android/app/src/main/res/layout/overlay_panel.xml" qualifiers="" type="layout"/><file name="overlay_bg" path="/opt/aitraderbridge/android/app/src/main/res/drawable/overlay_bg.xml" qualifiers="" type="drawable"/><file name="bg_button_ghost" path="/opt/aitraderbridge/android/app/src/main/res/drawable/bg_button_ghost.xml" qualifiers="" type="drawable"/><file name="bg_input" path="/opt/aitraderbridge/android/app/src/main/res/drawable/bg_input.xml" qualifiers="" type="drawable"/><file name="bg_button_primary" path="/opt/aitraderbridge/android/app/src/main/res/drawable/bg_button_primary.xml" qualifiers="" type="drawable"/><file name="bg_card" path="/opt/aitraderbridge/android/app/src/main/res/drawable/bg_card.xml" qualifiers="" type="drawable"/></source></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/opt/aitraderbridge/android/app/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/opt/aitraderbridge/android/app/src/debug/res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/opt/aitraderbridge/android/app/build/generated/res/resValues/debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/opt/aitraderbridge/android/app/build/generated/res/resValues/debug"/></dataSet><mergedItems/></merger>

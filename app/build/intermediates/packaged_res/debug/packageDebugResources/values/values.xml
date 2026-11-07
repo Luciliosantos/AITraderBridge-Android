@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#0B0F14</color>
+    <color name="brand">#21BA71</color>
+    <color name="danger">#E84B45</color>
+    <color name="muted">#8B9AAC</color>
+    <color name="stroke">#223040</color>
+    <color name="surface">#131A22</color>
+    <color name="text">#E6EDF5</color>
+    <color name="warn">#F0B429</color>
+    <string name="action_calibrate">Calibrar detector</string>
+    <string name="action_overlay">Permitir sobreposição</string>
+    <string name="action_pair">Parear dispositivo</string>
+    <string name="action_start">Iniciar captura</string>
+    <string name="action_stop">Parar captura</string>
+    <string name="app_name">AI Trader Bridge</string>
+    <string name="calibration_help">Toque na imagem na ordem: 1) ponto do preço A, 2) ponto do preço B, 3) borda esquerda do gráfico, 4) borda direita do gráfico.</string>
+    <string name="calibration_no_frame">Inicie a captura para ter um frame e calibre.</string>
+    <string name="calibration_price_a">Preço no ponto A</string>
+    <string name="calibration_price_b">Preço no ponto B</string>
+    <string name="calibration_save">Salvar calibração</string>
+    <string name="calibration_title">Calibração do detector</string>
+    <string name="hint_asset">EUR/USD</string>
+    <string name="hint_code">ABCD-1234</string>
+    <string name="hint_server">https://seu-app.base44.app</string>
+    <string name="label_asset">Ativo monitorado</string>
+    <string name="label_code">Código de pareamento</string>
+    <string name="label_device">Nome do dispositivo</string>
+    <string name="label_server">URL do painel</string>
+    <string name="notif_channel">Captura de tela</string>
+    <string name="notif_text">O painel flutuante está ativo.</string>
+    <string name="notif_title">Capturando a IQ Option</string>
+    <string name="state_disconnected">Sem pareamento. Gere um código no painel.</string>
+    <string name="state_ready">Pareado. Conceda a sobreposição e inicie a captura.</string>
+    <string name="subtitle">Ponte autenticada entre a IQ Option e o painel Multi Frame Candle Compass.</string>
+    <string name="title">AI Trader Flutuante</string>
+    <style name="Field">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:background">@drawable/bg_input</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textColorHint">#55657A</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    <style name="GhostButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:background">@drawable/bg_button_ghost</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="Label">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginBottom">6dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textColor">@color/muted</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+    <style name="PrimaryButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:background">@drawable/bg_button_primary</item>
+        <item name="android:textColor">#04150C</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="Theme.AITrader" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:statusBarColor">@color/bg</item>
+        <item name="android:navigationBarColor">@color/bg</item>
+        <item name="android:textColorPrimary">@color/text</item>
+        <item name="android:textColorSecondary">@color/muted</item>
+        <item name="colorAccent">@color/brand</item>
+    </style>
+    <style name="TinyButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:background">@drawable/bg_button_ghost</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+</resources>

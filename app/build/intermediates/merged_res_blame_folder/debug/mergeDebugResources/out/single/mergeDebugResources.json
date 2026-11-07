@@ -1,0 +1,34 @@
+[
+    {
+        "merged": "com.aitrader.bridge.app-debug-4:/layout_overlay_panel.xml.flat",
+        "source": "com.aitrader.bridge.app-main-6:/layout/overlay_panel.xml"
+    },
+    {
+        "merged": "com.aitrader.bridge.app-debug-4:/layout_activity_main.xml.flat",
+        "source": "com.aitrader.bridge.app-main-6:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.aitrader.bridge.app-debug-4:/drawable_bg_button_primary.xml.flat",
+        "source": "com.aitrader.bridge.app-main-6:/drawable/bg_button_primary.xml"
+    },
+    {
+        "merged": "com.aitrader.bridge.app-debug-4:/layout_dialog_calibration.xml.flat",
+        "source": "com.aitrader.bridge.app-main-6:/layout/dialog_calibration.xml"
+    },
+    {
+        "merged": "com.aitrader.bridge.app-debug-4:/drawable_bg_input.xml.flat",
+        "source": "com.aitrader.bridge.app-main-6:/drawable/bg_input.xml"
+    },
+    {
+        "merged": "com.aitrader.bridge.app-debug-4:/drawable_overlay_bg.xml.flat",
+        "source": "com.aitrader.bridge.app-main-6:/drawable/overlay_bg.xml"
+    },
+    {
+        "merged": "com.aitrader.bridge.app-debug-4:/drawable_bg_card.xml.flat",
+        "source": "com.aitrader.bridge.app-main-6:/drawable/bg_card.xml"
+    },
+    {
+        "merged": "com.aitrader.bridge.app-debug-4:/drawable_bg_button_ghost.xml.flat",
+        "source": "com.aitrader.bridge.app-main-6:/drawable/bg_button_ghost.xml"
+    }
+]

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title"
+            android:textColor="@color/text"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="18dp"
+            android:text="@string/subtitle"
+            android:textColor="@color/muted"
+            android:textSize="13sp" />
+
+        <TextView style="@style/Label" android:text="@string/label_server" />
+
+        <EditText
+            android:id="@+id/inputServer"
+            style="@style/Field"
+            android:hint="@string/hint_server"
+            android:importantForAutofill="no"
+            android:inputType="textUri"
+            android:maxLines="1" />
+
+        <TextView style="@style/Label" android:text="@string/label_device" />
+
+        <EditText
+            android:id="@+id/inputDevice"
+            style="@style/Field"
+            android:hint="Moto G84"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:maxLines="1" />
+
+        <TextView style="@style/Label" android:text="@string/label_code" />
+
+        <EditText
+            android:id="@+id/inputCode"
+            style="@style/Field"
+            android:hint="@string/hint_code"
+            android:importantForAutofill="no"
+            android:inputType="textCapCharacters"
+            android:maxLines="1" />
+
+        <TextView style="@style/Label" android:text="@string/label_asset" />
+
+        <EditText
+            android:id="@+id/inputAsset"
+            style="@style/Field"
+            android:hint="@string/hint_asset"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:maxLines="1" />
+
+        <Button
+            android:id="@+id/buttonPair"
+            style="@style/PrimaryButton"
+            android:layout_marginTop="8dp"
+            android:text="@string/action_pair" />
+
+        <TextView
+            android:id="@+id/textStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:padding="12dp"
+            android:background="@drawable/bg_card"
+            android:lineSpacingExtra="2dp"
+            android:text="@string/state_disconnected"
+            android:textColor="@color/text"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/buttonOverlay"
+            style="@style/GhostButton"
+            android:layout_marginTop="14dp"
+            android:text="@string/action_overlay" />
+
+        <Button
+            android:id="@+id/buttonCapture"
+            style="@style/PrimaryButton"
+            android:text="@string/action_start" />
+
+        <Button
+            android:id="@+id/buttonCalibrate"
+            style="@style/GhostButton"
+            android:text="@string/action_calibrate" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="Fluxo: parear → liberar sobreposição → calibrar → iniciar captura. Abra a IQ Option; o painel flutuante mostra a decisão do motor."
+            android:textColor="@color/muted"
+            android:textSize="11sp" />
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AI Trader Bridge</string>
+
+    <string name="title">AI Trader Flutuante</string>
+    <string name="subtitle">Ponte autenticada entre a IQ Option e o painel Multi Frame Candle Compass.</string>
+
+    <string name="label_server">URL do painel</string>
+    <string name="hint_server">https://seu-app.base44.app</string>
+    <string name="label_device">Nome do dispositivo</string>
+    <string name="label_code">Código de pareamento</string>
+    <string name="hint_code">ABCD-1234</string>
+    <string name="label_asset">Ativo monitorado</string>
+    <string name="hint_asset">EUR/USD</string>
+
+    <string name="action_pair">Parear dispositivo</string>
+    <string name="action_overlay">Permitir sobreposição</string>
+    <string name="action_start">Iniciar captura</string>
+    <string name="action_stop">Parar captura</string>
+    <string name="action_calibrate">Calibrar detector</string>
+
+    <string name="state_disconnected">Sem pareamento. Gere um código no painel.</string>
+    <string name="state_ready">Pareado. Conceda a sobreposição e inicie a captura.</string>
+
+    <string name="notif_channel">Captura de tela</string>
+    <string name="notif_title">Capturando a IQ Option</string>
+    <string name="notif_text">O painel flutuante está ativo.</string>
+
+    <string name="calibration_title">Calibração do detector</string>
+    <string name="calibration_help">Toque na imagem na ordem: 1) ponto do preço A, 2) ponto do preço B, 3) borda esquerda do gráfico, 4) borda direita do gráfico.</string>
+    <string name="calibration_price_a">Preço no ponto A</string>
+    <string name="calibration_price_b">Preço no ponto B</string>
+    <string name="calibration_save">Salvar calibração</string>
+    <string name="calibration_no_frame">Inicie a captura para ter um frame e calibre.</string>
+</resources>
