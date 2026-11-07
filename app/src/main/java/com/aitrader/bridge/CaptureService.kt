@@ -265,7 +265,7 @@ class CaptureService : Service() {
             // fechados; a ordem é solicitada uma única vez para o candle que acabou de fechar.
             val closedCandles = candles.filter { it.isClosed == "true" }
             val formingCount = candles.count { it.isClosed != "true" }
-            val result = StrategyEngine.analyze(candles, prefs.strategies)
+            val result = StrategyEngine.analyze(closedCandles, prefs.strategies)
             val lastClosed = closedCandles.lastOrNull()
             if ((result.direction == "COMPRA" || result.direction == "VENDA") && lastClosed != null) {
                 val signalKey = "$timeframe:${lastClosed.timestamp}:${result.direction}"
