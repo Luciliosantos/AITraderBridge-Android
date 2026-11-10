@@ -234,9 +234,10 @@ class MainActivity : AppCompatActivity() {
         val strategyConfig = JSONObject().put("MESTRE_CONFLUENCIAS", true)
             .put("EMA_9_21", findViewById<CheckBox>(R.id.strategyEma).isChecked)
             .put("RSI_14", findViewById<CheckBox>(R.id.strategyRsi).isChecked)
+            .put("MACD", findViewById<CheckBox>(R.id.strategyMacd).isChecked)
             .put("SUPPORT_RESISTANCE", findViewById<CheckBox>(R.id.strategySr).isChecked)
             .put("CANDLE_PATTERNS", findViewById<CheckBox>(R.id.strategyCandle).isChecked)
-        if (!listOf(R.id.strategyEma,R.id.strategyRsi,R.id.strategySr,R.id.strategyCandle).any { findViewById<CheckBox>(it).isChecked }) { toast("Ative pelo menos uma estratégia."); return }
+        if (!listOf(R.id.strategyEma,R.id.strategyRsi,R.id.strategyMacd,R.id.strategySr,R.id.strategyCandle).any { findViewById<CheckBox>(it).isChecked }) { toast("Ative pelo menos uma estratégia."); return }
         status.text = "Salvando configurações e validando o mercado…"
         io.execute {
             val config = JSONObject().put("environment", "demo").put("timeframe", selectedTimeframe).put("stake", stake)

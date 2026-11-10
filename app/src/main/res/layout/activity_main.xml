@@ -42,6 +42,7 @@
         <TextView style="@style/Label" android:text="ESTRATÉGIAS DE ANÁLISE" />
         <CheckBox android:id="@+id/strategyEma" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Tendência EMA 9 / 21" android:textColor="@color/text" android:checked="true" />
         <CheckBox android:id="@+id/strategyRsi" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Momentum RSI 14" android:textColor="@color/text" android:checked="true" />
+        <CheckBox android:id="@+id/strategyMacd" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="MACD" android:textColor="@color/text" android:checked="true" />
         <CheckBox android:id="@+id/strategySr" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Suporte e resistência" android:textColor="@color/text" android:checked="true" />
         <CheckBox android:id="@+id/strategyCandle" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Padrões de candles" android:textColor="@color/text" android:checked="true" />
 
