@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var prefs: Prefs
     private lateinit var status: TextView
     private lateinit var brokerLoginPanel: LinearLayout
+    private lateinit var appContent: LinearLayout
+    private lateinit var loginStatus: TextView
     private lateinit var brokerSessionPanel: LinearLayout
     private lateinit var brokerSessionStatus: TextView
     private lateinit var brokerEmail: EditText
@@ -109,6 +111,8 @@ class MainActivity : AppCompatActivity() {
         prefs = Prefs(this)
         status = findViewById(R.id.textStatus)
         brokerLoginPanel = findViewById(R.id.brokerLoginPanel)
+        appContent = findViewById(R.id.appContent)
+        loginStatus = findViewById(R.id.loginStatus)
         brokerSessionPanel = findViewById(R.id.brokerSessionPanel)
         brokerSessionStatus = findViewById(R.id.brokerSessionStatus)
         brokerEmail = findViewById(R.id.brokerEmail)
@@ -128,6 +132,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<RadioGroup>(R.id.timeframeGroup).check(R.id.tfM1)
         setAssetPlaceholder("Faça login e conecte a IQ Option para carregar os ativos.")
         buttonLogin.setOnClickListener { loginBroker() }
+        findViewById<Button>(R.id.buttonChangeBroker).setOnClickListener { logoutBroker() }
         buttonConnectIq.setOnClickListener { connectIq() }
         buttonStart.setOnClickListener { startBot() }
         findViewById<Button>(R.id.buttonStop).setOnClickListener { stopBot() }
@@ -139,21 +144,39 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        if (prefs.token.isBlank()) showBrokerLogin() else validateBrokerSession()
-        status.text = "Verificando sua sessão e a conexão com a IQ Option…"
+        // Exige e-mail e senha em toda abertura; não reutiliza uma sessão anterior para desbloquear a tela.
+        prefs.token = ""
+        showBrokerLogin()
+        loginStatus.text = "Informe seu acesso LS Broker para continuar."
     }
 
     private fun showBrokerLogin() {
         brokerSessionValidated = false
+        iqConnected = false
+        appContent.visibility = View.GONE
         brokerSessionPanel.visibility = View.GONE
         brokerLoginPanel.visibility = View.VISIBLE
+        brokerEmail.requestFocus()
     }
 
     private fun showBrokerSession(email: String) {
         brokerSessionValidated = true
         brokerLoginPanel.visibility = View.GONE
+        appContent.visibility = View.VISIBLE
         brokerSessionPanel.visibility = View.VISIBLE
-        brokerSessionStatus.text = if (email.isBlank()) "Sessão LS Broker ativa neste aparelho" else "Conta LS Broker · $email"
+        brokerSessionStatus.text = if (email.isBlank()) "Sessão LS Broker ativa" else "Conta LS Broker · $email"
+    }
+
+    private fun logoutBroker() {
+        botActive = false
+        main.removeCallbacks(monitor)
+        removeOverlay()
+        prefs.token = ""
+        iqConnected = false
+        brokerPassword.text.clear()
+        iqPassword.text.clear()
+        showBrokerLogin()
+        loginStatus.text = "Você saiu da conta. Entre novamente para usar o aplicativo."
     }
 
     private fun validateBrokerSession() {
@@ -179,7 +202,7 @@ class MainActivity : AppCompatActivity() {
         val password = brokerPassword.text.toString()
         if (email.isBlank() || password.isBlank()) { toast("Informe o e-mail e a senha da sua conta."); return }
         buttonLogin.isEnabled = false
-        status.text = "Validando sua conta…"
+        loginStatus.text = "Validando seu acesso…"
         io.execute {
             val response = BridgeApi.post(apiBase, "/api/v1/auth/login", null,
                 JSONObject().put("email", email).put("password", password))
@@ -191,9 +214,10 @@ class MainActivity : AppCompatActivity() {
                     brokerPassword.text.clear()
                     showBrokerSession(json.optJSONObject("user")?.optString("email").orEmpty())
                     status.text = "Acesso confirmado. Agora conecte sua IQ Option."
+                    loginStatus.text = "Acesso confirmado."
                     refreshIqStatus()
                     toast("Acesso ao aplicativo confirmado.")
-                } else status.text = "Não foi possível entrar: ${response.errorMessage()}"
+                } else loginStatus.text = "Não foi possível entrar: ${response.errorMessage()}"
             }
         }
     }

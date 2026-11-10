@@ -17,11 +17,13 @@
 
         <LinearLayout android:id="@+id/brokerLoginPanel" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/bg_card" android:padding="14dp" android:visibility="gone">
             <TextView style="@style/Label" android:layout_marginTop="0dp" android:text="PRIMEIRO ACESSO AO APLICATIVO" />
-            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Entre uma única vez com sua conta LS Broker. A sessão ficará salva neste aparelho." android:textColor="@color/muted" android:textSize="12sp" android:layout_marginBottom="10dp" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Entre com seu e-mail e senha do LS Broker para desbloquear o aplicativo." android:textColor="@color/muted" android:textSize="12sp" android:layout_marginBottom="10dp" />
             <EditText android:id="@+id/brokerEmail" style="@style/Field" android:hint="E-mail da conta" android:inputType="textEmailAddress" />
             <EditText android:id="@+id/brokerPassword" style="@style/Field" android:hint="Senha da conta" android:inputType="textPassword" />
             <Button android:id="@+id/buttonLogin" style="@style/PrimaryButton" android:text="Entrar no aplicativo" />
+            <TextView android:id="@+id/loginStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Acesso protegido pelo LS Broker." android:textColor="@color/muted" android:textSize="12sp" android:layout_marginTop="10dp" />
         </LinearLayout>
+        <LinearLayout android:id="@+id/appContent" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone">
         <LinearLayout android:id="@+id/brokerSessionPanel" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:background="@drawable/bg_card" android:padding="12dp" android:visibility="gone">
             <View android:layout_width="8dp" android:layout_height="8dp" android:background="@drawable/bg_status_dot" android:layout_marginEnd="10dp" />
             <TextView android:id="@+id/brokerSessionStatus" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Sessão LS Broker ativa" android:textColor="@color/text" android:textSize="12sp" />
@@ -83,5 +85,6 @@
         <Button android:id="@+id/buttonStop" style="@style/GhostButton" android:text="Parar bot" />
         <TextView android:id="@+id/textStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:background="@drawable/bg_card" android:padding="14dp" android:text="Conecte sua conta IQ Option para começar." android:textColor="@color/text" android:textSize="13sp" />
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:text="O painel flutuante aparece ao iniciar o robô. A execução automática começa em DEMO. Operações financeiras envolvem risco." android:textColor="@color/muted" android:textSize="11sp" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
