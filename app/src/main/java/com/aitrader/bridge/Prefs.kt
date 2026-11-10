@@ -1,72 +1,11 @@
 package com.aitrader.bridge
 
 import android.content.Context
-import android.content.SharedPreferences
 
-/** Estado persistido do aparelho: pareamento, ativo e calibração. */
+/** Guarda somente a sessão LS Broker no dispositivo. Senhas da corretora não são persistidas. */
 class Prefs(context: Context) {
-
-    private val sp: SharedPreferences =
-        context.applicationContext.getSharedPreferences("ai_trader_bridge", Context.MODE_PRIVATE)
-
-    var baseUrl: String
-        get() = sp.getString("base_url", "") ?: ""
-        set(value) {
-            sp.edit().putString("base_url", value.trim().trimEnd('/')).apply()
-        }
-
+    private val sp = context.applicationContext.getSharedPreferences("ai_trader_bridge_iq_v2", Context.MODE_PRIVATE)
     var token: String
         get() = sp.getString("token", "") ?: ""
-        set(value) {
-            sp.edit().putString("token", value).apply()
-        }
-
-    var deviceId: String
-        get() = sp.getString("device_id", "") ?: ""
-        set(value) {
-            sp.edit().putString("device_id", value).apply()
-        }
-
-    var deviceName: String
-        get() = sp.getString("device_name", "") ?: ""
-        set(value) {
-            sp.edit().putString("device_name", value).apply()
-        }
-
-    var asset: String
-        get() = sp.getString("asset", "") ?: ""
-        set(value) {
-            sp.edit().putString("asset", value.trim()).apply()
-        }
-
-    var timeframe: String
-        get() = sp.getString("timeframe", "M1") ?: "M1"
-        set(value) {
-            sp.edit().putString("timeframe", value).apply()
-        }
-
-    /** Sequência monotônica exigida pela ponte (409 se repetir). */
-    var sequence: Long
-        get() = sp.getLong("sequence", 0L)
-        set(value) {
-            sp.edit().putLong("sequence", value).apply()
-        }
-
-    var calibrationJson: String
-        get() = sp.getString("calibration", "") ?: ""
-        set(value) {
-            sp.edit().putString("calibration", value).apply()
-        }
-
-    fun isPaired(): Boolean = token.isNotEmpty() && baseUrl.isNotEmpty()
-
-    var strategies: Set<String>
-        get() = sp.getStringSet("strategies", setOf("EMA", "RSI", "MACD", "CANDLE", "SR", "DOJI", "HAMMER", "SHOOTING_STAR", "MORNING_STAR", "EVENING_STAR", "HARAMI", "PIERCING", "DARK_CLOUD", "THREE_SOLDIERS", "THREE_CROWS", "TWEEZERS", "MARUBOZU"))?.toSet() ?: setOf("EMA", "RSI", "MACD", "CANDLE", "SR", "DOJI", "HAMMER", "SHOOTING_STAR", "MORNING_STAR", "EVENING_STAR", "HARAMI", "PIERCING", "DARK_CLOUD", "THREE_SOLDIERS", "THREE_CROWS", "TWEEZERS", "MARUBOZU")
-        set(value) { sp.edit().putStringSet("strategies", value.toSet()).apply() }
-
-    var autoTradeEnabled: Boolean
-        get() = sp.getBoolean("auto_trade_enabled", false)
-        set(value) { sp.edit().putBoolean("auto_trade_enabled", value).apply() }
-
-    fun calibration(): Calibration? = Calibration.fromJson(calibrationJson)
+        set(value) { sp.edit().putString("token", value).apply() }
 }
