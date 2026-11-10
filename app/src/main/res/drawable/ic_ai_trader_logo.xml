@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="96dp" android:height="96dp" android:viewportWidth="96" android:viewportHeight="96">
-    <path android:fillColor="#0B1119" android:pathData="M18,2 L78,2 Q94,2 94,18 L94,78 Q94,94 78,94 L18,94 Q2,94 2,78 L2,18 Q2,2 18,2 Z" />
-    <path android:fillColor="#142333" android:pathData="M18,12 L78,12 Q84,12 84,18 L84,78 Q84,84 78,84 L18,84 Q12,84 12,78 L12,18 Q12,12 18,12 Z" />
-    <path android:fillColor="#21BA71" android:pathData="M25,54 L33,54 L33,69 L25,69 Z M43,37 L51,37 L51,69 L43,69 Z M61,25 L69,25 L69,69 L61,69 Z" />
-    <path android:fillColor="#F0B429" android:pathData="M25,45 L33,45 L33,51 L25,51 Z M43,28 L51,28 L51,34 L43,34 Z M61,16 L69,16 L69,22 L61,22 Z" />
-    <path android:fillColor="#E6EDF5" android:pathData="M20,74 L76,74 L76,78 L20,78 Z" />
-    <path android:fillColor="#21BA71" android:pathData="M20,30 L36,22 L48,27 L70,12 L74,17 L49,34 L36,29 L23,36 Z" />
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <!-- Transparent corners keep the mark round on square and circular launchers. -->
+    <path android:fillColor="#07130F" android:pathData="M54,3 A51,51 0,1 1,54 105 A51,51 0,1 1,54 3 Z" />
+    <path android:strokeColor="#0BEA78" android:strokeWidth="2.2" android:fillColor="#0C2119"
+        android:pathData="M54,8 A46,46 0,1 1,54 100 A46,46 0,1 1,54 8 Z" />
+    <path android:fillColor="#0BEA78" android:pathData="M24,70 L24,82 L31,82 L31,70 Z M38,59 L38,82 L45,82 L45,59 Z M52,47 L52,82 L59,82 L59,47 Z M66,35 L66,82 L73,82 L73,35 Z" />
+    <path android:fillColor="#D8FFE9" android:pathData="M22,86 L84,86 L84,90 L22,90 Z" />
+    <path android:fillColor="#E7FFF0" android:pathData="M31,43 L42,29 L50,33 L58,22 L70,25 L78,16 L83,20 L73,34 L59,31 L51,42 L42,37 L35,48 Z" />
+    <path android:fillColor="#0BEA78" android:pathData="M31,44 L25,34 L19,27 L29,29 L36,36 Z M69,27 L75,14 L84,8 L81,20 L75,29 Z" />
+    <path android:fillColor="#0BEA78" android:pathData="M41,49 Q52,56 65,47 L73,40 Q71,54 60,59 Q47,64 37,55 Z" />
+    <path android:fillColor="#E7FFF0" android:pathData="M58,49 Q67,45 72,39 L76,42 Q71,54 59,57 Z" />
+    <path android:fillColor="#07130F" android:pathData="M65,43 L68,42 L67,45 L64,46 Z" />
 </vector>

@@ -54,18 +54,18 @@ class MainActivity : AppCompatActivity() {
     private var assetsLoading = false
     private var assets: List<Asset> = emptyList()
 
-    private data class Asset(val id: Int, val name: String, val market: String)
-    private data class AssetSpec(val symbol: String, val market: String)
+    private data class Asset(val id: Int, val name: String, val market: String, val isOpen: Boolean? = null)
 
-    private val selected15Assets = listOf(
-        AssetSpec("EUR/USD", "normal"), AssetSpec("GBP/USD", "normal"),
-        AssetSpec("USD/JPY", "normal"), AssetSpec("AUD/USD", "normal"),
-        AssetSpec("USD/CAD", "normal"), AssetSpec("USD/CHF", "normal"),
-        AssetSpec("NZD/USD", "normal"), AssetSpec("EUR/GBP", "normal"),
-        AssetSpec("EUR/JPY", "normal"), AssetSpec("GBP/JPY", "normal"),
-        AssetSpec("EUR/USD", "otc"), AssetSpec("GBP/USD", "otc"),
-        AssetSpec("USD/JPY", "otc"), AssetSpec("AUD/USD", "otc"),
-        AssetSpec("EUR/GBP", "otc")
+    // IDs fixos e verificados na tabela pública de active_id da IQ Option.
+    private val fixedAssets = listOf(
+        Asset(1, "EUR/USD", "normal"), Asset(5, "GBP/USD", "normal"),
+        Asset(6, "USD/JPY", "normal"), Asset(99, "AUD/USD", "normal"),
+        Asset(100, "USD/CAD", "normal"), Asset(72, "USD/CHF", "normal"),
+        Asset(8, "NZD/USD", "normal"), Asset(2, "EUR/GBP", "normal"),
+        Asset(4, "EUR/JPY", "normal"), Asset(3, "GBP/JPY", "normal"),
+        Asset(76, "EUR/USD OTC", "otc"), Asset(81, "GBP/USD OTC", "otc"),
+        Asset(85, "USD/JPY OTC", "otc"), Asset(77, "EUR/GBP OTC", "otc"),
+        Asset(79, "EUR/JPY OTC", "otc")
     )
 
     private val monitor = object : Runnable {
@@ -130,7 +130,8 @@ class MainActivity : AppCompatActivity() {
         buttonStart = findViewById(R.id.buttonStart)
 
         findViewById<RadioGroup>(R.id.timeframeGroup).check(R.id.tfM1)
-        setAssetPlaceholder("Faça login e conecte a IQ Option para carregar os ativos.")
+        assets = fixedAssets
+        setAssetPlaceholder("15 ativos fixos · conecte a IQ Option para ver disponibilidade")
         buttonLogin.setOnClickListener { loginBroker() }
         findViewById<Button>(R.id.buttonChangeBroker).setOnClickListener { logoutBroker() }
         buttonConnectIq.setOnClickListener { connectIq() }
@@ -186,8 +187,10 @@ class MainActivity : AppCompatActivity() {
             main.post {
                 if (response.status in 200..299) {
                     showBrokerSession(email)
-                    status.text = "Sessão validada. Verificando IQ Option…"
-                    refreshIqStatus()
+                    status.text = "Sessão LS Broker validada. Conecte a IQ Option quando quiser."
+                    iqStatus.text = "IQ Option aguardando conexão manual"
+                    assets = fixedAssets
+                    renderAssets()
                 } else {
                     prefs.token = ""
                     showBrokerLogin()
@@ -215,7 +218,9 @@ class MainActivity : AppCompatActivity() {
                     showBrokerSession(json.optJSONObject("user")?.optString("email").orEmpty())
                     status.text = "Acesso confirmado. Agora conecte sua IQ Option."
                     loginStatus.text = "Acesso confirmado."
-                    refreshIqStatus()
+                    iqStatus.text = "IQ Option aguardando conexão manual"
+                    assets = fixedAssets
+                    renderAssets()
                     toast("Acesso ao aplicativo confirmado.")
                 } else loginStatus.text = "Não foi possível entrar: ${response.errorMessage()}"
             }
@@ -243,7 +248,7 @@ class MainActivity : AppCompatActivity() {
                 if (response.status in 200..299 && json.optString("status") == "online") {
                     iqStatus.text = "Conexão autenticada. Conferindo saldo e ativos…"
                     status.text = "Conexão inicial confirmada; verificando se está pronta para operar…"
-                    refreshIqStatus()
+                    refreshIqStatus(force = true)
                     toast("IQ Option autenticada. Validando o canal de dados.")
                 } else {
                     iqConnected = false
@@ -255,8 +260,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     /** A UI só mostra conectada depois de validar status E consultar saldos pela sessão ativa. */
-    private fun refreshIqStatus() {
-        if (!brokerSessionValidated || prefs.token.isBlank() || iqStatusLoading) return
+    private fun refreshIqStatus(force: Boolean = false) {
+        if ((!iqConnected && !force) || !brokerSessionValidated || prefs.token.isBlank() || iqStatusLoading) return
         iqStatusLoading = true
         io.execute {
             val statusResponse = BridgeApi.get(apiBase, "/api/v1/connectors/iq-option/status", prefs.token)
@@ -278,78 +283,60 @@ class MainActivity : AppCompatActivity() {
                     loadAssets()
                 } else {
                     iqStatus.text = "IQ Option desconectada ou sessão expirada"
-                    assetStatus.text = "Reconecte a IQ Option para carregar os 15 ativos."
-                    setAssetPlaceholder("Aguardando conexão válida com a IQ Option")
-                    status.text = "A conexão não está pronta para operar. ${detail.ifBlank { "Conecte novamente a IQ Option." }}"
+                    assetStatus.text = "15 ativos fixos por ID · conecte a IQ Option para verificar aberto/fechado."
+                    assets = fixedAssets
+                    renderAssets()
+                    status.text = "IQ Option desconectada. A autenticação só acontece ao tocar em Conectar IQ Option."
                 }
             }
         }
     }
-
-    private fun normalizeSymbol(value: String): String = value.uppercase()
-        .replace("OTC", "").filter { it.isLetterOrDigit() }
 
     private fun setAssetPlaceholder(label: String) {
         assetSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, listOf(label))
         assetSpinner.isEnabled = false
     }
 
+    private fun renderAssets() {
+        val labels = listOf("Selecione um dos 15 ativos fixos") + assets.map { asset ->
+            val state = when (asset.isOpen) { true -> "ABERTO"; false -> "FECHADO"; null -> "AGUARDANDO IQ" }
+            "${asset.name}  ·  $state  ·  ID ${asset.id}"
+        }
+        assetSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, labels)
+        assetSpinner.isEnabled = assets.isNotEmpty()
+        val savedIndex = assets.indexOfFirst { it.id == prefs.selectedAssetId }
+        assetSpinner.setSelection(if (savedIndex >= 0) savedIndex + 1 else 0)
+    }
+
     private fun loadAssets() {
         if (!iqConnected || assetsLoading || prefs.token.isBlank()) return
         assetsLoading = true
-        assetStatus.text = "Consultando catálogo da IQ Option…"
-        setAssetPlaceholder("Carregando ativos disponíveis…")
+        assetStatus.text = "Verificando os 15 IDs fixos na IQ Option…"
         io.execute {
-            val response = BridgeApi.get(apiBase, "/api/v1/connectors/iq-option/assets", prefs.token)
+            val response = BridgeApi.get(apiBase, "/api/v1/connectors/iq-option/assets/status", prefs.token)
             val json = response.json()
-            val rowsByKey = mutableMapOf<String, Asset>()
-            for (group in listOf("normal", "otc")) {
-                val rows = json.optJSONArray(group) ?: continue
+            val rows = json.optJSONArray("items")
+            val byId = mutableMapOf<Int, Boolean>()
+            if (response.status in 200..299 && rows != null) {
                 for (i in 0 until rows.length()) {
                     val row = rows.optJSONObject(i) ?: continue
                     val id = row.optInt("id")
-                    val name = row.optString("name")
-                    val market = row.optString("market", group).lowercase().let { if (it == "otc" || group == "otc") "otc" else "normal" }
-                    if (id > 0 && name.isNotBlank()) {
-                        val symbol = normalizeSymbol(row.optString("code").ifBlank { name })
-                        val display = if (market == "otc") "${name.replace(Regex("\\s*OTC$", RegexOption.IGNORE_CASE), "")} OTC" else name.replace(Regex("\\s*OTC$", RegexOption.IGNORE_CASE), "")
-                        rowsByKey["$symbol|$market"] = Asset(id, display, market)
-                    }
+                    if (id > 0) byId[id] = row.optBoolean("open", false)
                 }
-            }
-            val digitalRows = json.optJSONArray("digital")
-            if (digitalRows != null) {
-                for (i in 0 until digitalRows.length()) {
-                    val row = digitalRows.optJSONObject(i) ?: continue
-                    val id = row.optInt("id")
-                    val name = row.optString("name")
-                    if (id > 0 && name.isNotBlank()) {
-                        val market = row.optString("market", "digital")
-                        rowsByKey["digital|$id"] = Asset(id, name, market)
-                    }
-                }
-            }
-            val found = if (rowsByKey.keys.any { it.startsWith("digital|") }) {
-                rowsByKey.filterKeys { it.startsWith("digital|") }.values.take(15)
-            } else {
-                selected15Assets.mapNotNull { spec -> rowsByKey["${normalizeSymbol(spec.symbol)}|${spec.market}"] }
             }
             main.post {
                 assetsLoading = false
-                if (response.status in 200..299 && found.isNotEmpty()) {
-                    assets = found
-                    val names = listOf("Selecione o ativo que o robô vai operar") + assets.map { it.name }
-                    assetSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, names)
-                    assetSpinner.isEnabled = true
-                    val savedIndex = assets.indexOfFirst { it.id == prefs.selectedAssetId }
-                    assetSpinner.setSelection(if (savedIndex >= 0) savedIndex + 1 else 0)
-                    assetStatus.text = "${assets.size} de 15 ativos encontrados. O robô operará somente o ativo selecionado."
-                    status.text = if (assets.size == 15) "Os 15 ativos foram carregados. Escolha um para operar." else "Catálogo carregado parcialmente: ${assets.size} de 15 ativos retornados pela IQ Option."
+                if (response.status in 200..299 && rows != null) {
+                    assets = fixedAssets.map { it.copy(isOpen = byId[it.id] ?: false) }
+                    renderAssets()
+                    val openCount = assets.count { it.isOpen == true }
+                    assetStatus.text = "$openCount ativos ABERTOS · ${assets.size - openCount} FECHADOS · IDs fixos"
+                    status.text = "Situação dos ativos atualizada pela chegada dos candles M1."
                 } else {
-                    assets = emptyList()
-                    setAssetPlaceholder("Não foi possível carregar os ativos")
-                    assetStatus.text = "Falha ao carregar o catálogo: ${response.errorMessage()}"
-                    status.text = "A IQ Option respondeu, mas não entregou a lista de ativos. Tente atualizar a conexão."
+                    assets = fixedAssets.map { it.copy(isOpen = null) }
+                    renderAssets()
+                    assetStatus.text = "Não foi possível confirmar o estado dos ativos: ${response.errorMessage()}"
+                    status.text = "Lista fixa disponível; estado aberto/fechado aguardando resposta da IQ Option."
                 }
             }
         }
@@ -383,6 +370,7 @@ class MainActivity : AppCompatActivity() {
         }
         val asset = assets.getOrNull(assetSpinner.selectedItemPosition - 1)
         if (asset == null) { toast("Escolha um dos 15 ativos antes de iniciar."); return }
+        if (asset.isOpen != true) { toast("Esse ativo está FECHADO ou ainda não foi confirmado como ABERTO."); return }
         val stake = stakeInput.text.toString().replace(',', '.').toDoubleOrNull()
         val loss = lossInput.text.toString().replace(',', '.').toDoubleOrNull()
         val profit = profitInput.text.toString().replace(',', '.').toDoubleOrNull()
@@ -486,7 +474,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (::iqStatus.isInitialized && brokerSessionValidated && prefs.token.isNotBlank()) refreshIqStatus()
+        if (::iqStatus.isInitialized && iqConnected && brokerSessionValidated && prefs.token.isNotBlank()) refreshIqStatus()
     }
 
     @Deprecated("Deprecated in Android API; retained for the app's background trading flow")
