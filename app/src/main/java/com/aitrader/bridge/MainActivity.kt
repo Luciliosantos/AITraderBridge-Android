@@ -317,7 +317,23 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-            val found = selected15Assets.mapNotNull { spec -> rowsByKey["${normalizeSymbol(spec.symbol)}|${spec.market}"] }
+            val digitalRows = json.optJSONArray("digital")
+            if (digitalRows != null) {
+                for (i in 0 until digitalRows.length()) {
+                    val row = digitalRows.optJSONObject(i) ?: continue
+                    val id = row.optInt("id")
+                    val name = row.optString("name")
+                    if (id > 0 && name.isNotBlank()) {
+                        val market = row.optString("market", "digital")
+                        rowsByKey["digital|$id"] = Asset(id, name, market)
+                    }
+                }
+            }
+            val found = if (rowsByKey.keys.any { it.startsWith("digital|") }) {
+                rowsByKey.filterKeys { it.startsWith("digital|") }.values.take(15)
+            } else {
+                selected15Assets.mapNotNull { spec -> rowsByKey["${normalizeSymbol(spec.symbol)}|${spec.market}"] }
+            }
             main.post {
                 assetsLoading = false
                 if (response.status in 200..299 && found.isNotEmpty()) {
@@ -370,8 +386,8 @@ class MainActivity : AppCompatActivity() {
         val stake = stakeInput.text.toString().replace(',', '.').toDoubleOrNull()
         val loss = lossInput.text.toString().replace(',', '.').toDoubleOrNull()
         val profit = profitInput.text.toString().replace(',', '.').toDoubleOrNull()
-        if (stake == null || loss == null || profit == null || stake < 1 || stake > 10 || loss < 1 || loss > 50 || profit < 1 || profit > 500) {
-            toast("Entrada: R$1–10 · Stop Loss: R$1–50 · Meta: R$1–500.")
+        if (stake == null || loss == null || profit == null || stake < 1 || stake > 10 || loss < 1 || loss > 10000 || profit < 1 || profit > 10000) {
+            toast("Entrada: R$1–10 · Stop Loss e Meta: R$1–10.000.")
             return
         }
         val selectedTimeframe = timeframe()

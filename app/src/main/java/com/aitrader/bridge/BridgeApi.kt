@@ -25,7 +25,7 @@ object BridgeApi {
         try {
             conn.requestMethod = method
             conn.connectTimeout = 12000
-            conn.readTimeout = 20000
+            conn.readTimeout = 35000
             conn.setRequestProperty("Accept", "application/json")
             conn.setRequestProperty("Content-Type", "application/json; charset=utf-8")
             if (!token.isNullOrBlank()) conn.setRequestProperty("Authorization", "Bearer $token")
